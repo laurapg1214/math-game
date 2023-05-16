@@ -1,0 +1,32 @@
+.container-xl {
+  text-align: center;
+  background-color: rgb(254, 243, 173);
+  padding: 20px;
+}
+
+h1 {
+  padding-bottom: 20px;
+}
+
+.padding {
+  padding: 20px;
+}
+
+#questionText, #answerText {
+  text-align: center;
+}
+
+#questionText {
+  font-weight: bold;
+  display: none;
+  padding: 20px;
+}
+
+#answerText {
+  padding: 15px;
+}
+
+.btn {
+  align-items: center;
+  margin: auto;
+}
