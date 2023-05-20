@@ -1,27 +1,22 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
-  
+  // randomly generate variables
+  let x = Math.floor((Math.random() * 12) + 1);
+  let y = Math.floor((Math.random() * 12) + 1);
+  console.log(x, y);
+
   // generate question variables and answer
   var calculate = (x, y) => {
     return x + y;
   }
   
-  // dynamically add question to #question div
+  // On #questionButton click, display question
   var question = document.querySelector('#questionButton');
   question.onclick = () => {
-    
-    // randomly generate variables
-    let x = Math.floor((Math.random() * 12) + 1);
-    let y = Math.floor((Math.random() * 12) + 1);
-  
-    // run answer function to get correct answer
-    const answer = calculate(x, y);
-
-    // TODO: on #questionButton click, display question, hide button
     question.innerHTML = x + ' + ' + y;
   }
 
-  // TODO: on submit, generate answer; change answer to fixed; hide submit button
+  // on submit, generate answer; change answer to fixed; hide submit button
   var submit = document.querySelector('#submit');
   var input = document.querySelector('#answerText');
 
@@ -33,8 +28,28 @@ document.addEventListener('DOMContentLoaded', function() {
       submit.click()
     }
   })
+
+  // submit button functionality
   submit.onclick = () => {
-    console.log('submit');
+    // run answer function to get correct answer
+    const answer = calculate(x, y);
+
+    // grab input, convert to number
+    const response = Number(document.querySelector('#answerText').value);
+    
+    if (answer == response) {
+      correct();
+    } else {
+      incorrect();
+    }
+  }
+
+  // correct response function
+  var correct = () => {
+    question.style.backgroundColor = 'green';
+    question.innerHTML = 'Correct!'
+    input.style.backgroundColor = 'green';
+    input.style.color = 'white';
   }
     
 
