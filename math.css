@@ -21,6 +21,10 @@ h1 {
   font-size: 1.3em;
 }
 
+#question {
+  background-color: gray;
+}
+
 #newQuestion {
   margin-bottom: 20px;
 }

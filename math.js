@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // On #questionButton click, display question
   var question = document.querySelector('#question');
   var newQuestion = document.querySelector('#newQuestion');
+  var input1 = document.querySelector('#answerText');
+  var form1 = document.querySelector('#inputSection');
   newQuestion.onclick = () => {
+    question.style.backgroundColor = 'gray';
+    input1.style.backgroundColor = 'white';
+    form1.innerHTML = '<input class="answer" type="text" placeholder="type your answer here" id="answerText" autofocus />';
     // getNums function as object
     var getNums = () => {
       let x = generateX(),
