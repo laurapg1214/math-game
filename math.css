@@ -14,15 +14,19 @@ h1 {
   width: 160px;
 }
 
-#questionButton {
+#question, #newQuestion {
   text-align: center;
   font-weight: bold;
   font-weight: normal;
   font-size: 1.3em;
 }
 
+#newQuestion {
+  margin-bottom: 20px;
+}
+
 #answerText {
-  font-size: 1.3em;
+  font-size: 1.5em;
   text-align: center;
   font-weight: bold;
   padding: 20px;
