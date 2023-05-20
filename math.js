@@ -16,15 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return x + y;
   }
 
-  // On #questionButton click, display question
+  // grab elements
   var question = document.querySelector('#question');
   var newQuestion = document.querySelector('#newQuestion');
   var input1 = document.querySelector('#answerText');
   var form1 = document.querySelector('#inputSection');
+
+  // on #questionButton click, display question
   newQuestion.onclick = () => {
     question.style.backgroundColor = 'gray';
     input1.style.backgroundColor = 'white';
     form1.innerHTML = '<input class="answer" type="text" placeholder="type your answer here" id="answerText" autofocus />';
+    
     // getNums function as object
     var getNums = () => {
       let x = generateX(),
@@ -36,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     let nums = getNums();
     console.log(nums);
+
+    // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
     question.style.fontWeight = 'bold';
     question.class = '"btn btn-secondary btn-block"';
@@ -77,6 +82,18 @@ document.addEventListener('DOMContentLoaded', function() {
       input.style.backgroundColor = 'green';
       input.style.color = 'white';
     }
+
+    // incorrect response function
+    var incorrect = () => {
+      question.style.backgroundColor = 'red';
+      question.innerHTML = 'Incorrect'
+      question.style.fontWeight = 'normal';
+      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
+      input.style.backgroundColor = 'red';
+      input.style.color = 'white';
+    }
+
+    // TODO: create timer
   }
     
 
