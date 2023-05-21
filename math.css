@@ -37,13 +37,20 @@ h1 {
   background-color: #23395d;
 }
 
-#inputSection {
+#instructions {
+  text-align: center;
+  font-size: 1.5em;
+  font-style: italic;
+  color: #152238;
+}
+
+#game-area {
+  display: none;
   text-align: center;
 }
 
 #answerText {
   text-align: center;
-  font-weight: bold;
   padding: 20px 0px 20px 0px;
   background-color: rgb(255, 254, 200);
   color: #152238;

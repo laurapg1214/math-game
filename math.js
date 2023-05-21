@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const seconds = document.querySelector('#seconds');
   const correctScore = document.querySelector('#correct');
   const incorrectScore = document.querySelector('#incorrect');
+  const instructions = document.querySelector('#instructions');
+  const gameArea = document.querySelector('#game-area');
 
   // declare nums objects
   nums = {};
@@ -43,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // focus functions
   focusForm = () => {
-    input.focus();
     input.autocomplete = 'off';
+    input.focus();
   }
 
   focusButton = () => {
@@ -82,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // reset input field, focus form
     input.value = 'Game over!';
     input.style.color = '#006400';
+    input.style.fontWeight = 'bold';
     input.style.backgroundColor = 'rgb(255, 254, 200)';
 
     // disable submit button and input field
@@ -110,6 +113,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // #questionButton click to start game
   question.onclick = () => { 
+
+    // if start, hide instructions, make game area visible
+    if (gameArea.style.display = 'none') {
+      instructions.style.display = 'none';
+      gameArea.style.display = 'block';
+    }
 
     // reset score counters
     correctCount = 0;

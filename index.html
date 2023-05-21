@@ -27,15 +27,18 @@
     <div class="row question">
       <button class="btn btn-sm btn-info" id="question">Start game</button>
     </div>
-    <form id="inputSection">
-      <input type="text" value="?" placeholder="" id="answerText" />
-    </form>
-    <div class="row">
-      <button class="btn btn-sm btn-info" id="submit">Submit</button>
-    </div>
-    <div class="row" id="scorecard">
-      <p id="correct">|| Correct: 0</p>
-      <p id="incorrect">|| Incorrect: 0</p>
+    <p id="instructions">Answer as many questions as you can before the timer runs out!<br>Get one extra second for each correct answer.</p>
+    <div id="game-area">
+      <form>  
+        <input type="text" autocomplete="off" value="" placeholder="" id="answerText" />
+      </form>
+      <div class="row">
+        <button class="btn btn-sm btn-info" id="submit">Submit</button>
+      </div>
+      <div class="row" id="scorecard">
+        <p id="correct">|| Correct: 0</p>
+        <p id="incorrect">|| Incorrect: 0</p>
+      </div>
     </div>
   </div>
 </body>
