@@ -44,24 +44,23 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // on #questionButton click, display question
-  newQuestion.onclick = () => {
-    question.style.backgroundColor = 'gray';
-    input.style.backgroundColor = 'white';
-    input.value = '';
-    submit.className = 'btn btn-primary';
-    focusForm();
-    
+  newQuestion.onclick = () => { 
+    // generate math problem
     let nums = getNums();
     console.log(nums);
 
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
+    question.style.backgroundColor = 'gray';
+    input.style.backgroundColor = 'white';
+    input.value = '';
+    submit.className = 'btn btn-info';
     question.style.fontWeight = 'bold';
     question.style.color = 'white';
     question.style.fontStyle = 'normal';
+    focusForm();
 
-    // on submit, generate answer; change answer to fixed; hide submit button
-    // event listener for enter key
+    // event listener for enter key (submit)
     input.addEventListener('keypress', function(event) {  
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -74,8 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
     submit.onclick = () => {
       // disable submit button, change button type
       submit.className = 'btn btn-dark disabled';
-      // run answer function to get correct answer
-      const answer = calculate(nums.x, nums.y);
 
       // grab input, convert to number
       const response = Number(input.value);
@@ -84,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
       Object.assign(nums, {'response': response});
       console.log(nums);
       
-      if (answer == nums.response) {
+      if (nums.answer == nums.response) {
         correct();
       } else {
         incorrect();
@@ -93,10 +90,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // correct response function
     var correct = () => {
-      question.style.backgroundColor = 'green';
+      question.style.backgroundColor = '#3A9A00';
       question.innerHTML = 'Correct!'
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
-      input.style.backgroundColor = 'green';
+      input.style.backgroundColor = '#3A9A00';
       input.style.color = 'white';
       focusButton();
     }
