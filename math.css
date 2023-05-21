@@ -1,11 +1,15 @@
 .container-xl {
-  text-align: center;
   background-color: rgb(222, 231, 224);
   padding: 20px;
 }
 
 h1 {
+  text-align: center;
   padding-bottom: 20px;
+}
+
+#seconds {
+  padding-top: 20px;
 }
 
 .question {
@@ -22,8 +26,10 @@ h1 {
   color: white;
 }
 
-#newQuestion {
-  margin-top: 20px;
+
+
+#inputSection {
+  text-align: center;
 }
 
 #answerText {
@@ -43,4 +49,19 @@ h1 {
   align-items: center;
   margin: auto;
   height: 50px !important;
+}
+
+/* clock animation */
+@keyframes move {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 80%
+  }
+}
+
+#clock {
+  display: block;
+  margin: auto;
 }

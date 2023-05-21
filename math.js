@@ -27,13 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // grab elements
-  var question = document.querySelector('#question');
-  var newQuestion = document.querySelector('#newQuestion');
-  var input = document.querySelector('#answerText');
-  var questionDiv = document.querySelector('.question');
-  var submitButton = document.querySelector('#submit');
-  var clockSound = document.querySelector('#clockSound');
-  var chime = document.querySelector('#chime');
+  const question = document.querySelector('#question');
+  const newQuestion = document.querySelector('#newQuestion');
+  const input = document.querySelector('#answerText');
+  const questionDiv = document.querySelector('.question');
+  const submitButton = document.querySelector('#submit');
+  const clock = document.querySelector('#clock');
+  const seconds = document.querySelector('#seconds');
+  
 
   // focus functions
   focusForm = () => {
@@ -45,9 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
     newQuestion.focus();
   }
 
-  // TODO: create timer
-  var timer = () => {
+  // time variable
+  let time = 10;
 
+  // timer function
+  var timer = () => {
+    time++;
+    seconds.innerHTML = time + 's';
+    return time;
+  }
+
+  // link to inner html of h2
+  timer.innerHTML = time + 's';
+
+  // clock animation function
+  var clockAnimation = (time) => {
+    clock.style.display = 'inline';
+    clock.style.position = 'relative';
+    clock.style.animationName = 'move';
+    clock.style.animationDuration = time + 's';
+    clock.style.animationFillMode = 'forwards';
   }
 
   // #questionButton click
@@ -56,7 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let nums = getNums();
     console.log(nums);
 
+    // start clock sound
     clockSound.play();
+
+    // start animation
+    clockAnimation(time);
 
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
@@ -105,6 +127,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var correct = () => {
       // play correct chime
       chimeCorrect.play();
+      time = timer(time);
+      console.log(time);
 
       // announce answer
       question.innerHTML = 'Correct!'
@@ -124,6 +148,10 @@ document.addEventListener('DOMContentLoaded', function() {
       // play incorrect chime
       chimeIncorrect.play();
 
+      // reset timer
+      time = 10;
+      seconds.innerHTML = time + 's';
+
       // announce answer
       question.innerHTML = nums.response + ' is incorrect';
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
@@ -140,9 +168,4 @@ document.addEventListener('DOMContentLoaded', function() {
       focusButton();
     }
   }
-    
-
-  
-
-  // clock timer function; end game after 10 sec; correct = +1 sec for next round
 });
