@@ -17,12 +17,13 @@ h1 {
   width: 160px;
 }
 
-#question, #newQuestion {
+#question {
   text-align: center;
   font-weight: bold;
   font-weight: normal;
   font-size: 1.3em;
   color: white;
+  background-color: #00008B;
 }
 
 #inputSection {

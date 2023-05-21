@@ -28,11 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // grab elements
   const question = document.querySelector('#question');
-  const newQuestion = document.querySelector('#newQuestion');
   const input = document.querySelector('#answerText');
   const questionDiv = document.querySelector('.question');
   const submitButton = document.querySelector('#submit');
-  const clock = document.querySelector('#clock');
   const seconds = document.querySelector('#seconds');
   
 
@@ -43,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   focusButton = () => {
-    newQuestion.focus();
+    question.focus();
   }
 
   // time variable
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // #questionButton click
-  newQuestion.onclick = () => { 
+  question.onclick = () => { 
     // generate math problem
     let nums = getNums();
     console.log(nums);
@@ -87,12 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
     question.className = 'btn btn-primary';
-    question.style.fontWeight = 'bold';
     question.style.fontStyle = 'normal';
-    question.style.backgroundColor = '#00008B';
     input.style.backgroundColor = 'white';
     input.value = '';
     submitButton.className = 'btn btn-info';
+    submitButton.innerHTML = 'Submit';
     focusForm();
 
     // event listener for enter key (submit)
@@ -143,11 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
       seconds.innerHTML = time + 's';
 
       // announce answer
-      question.innerHTML = 'Correct!'
+      question.innerHTML = 'New question';
+      submitButton.innerHTML = 'Correct!';
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer;
 
       // adjust stylings
-      question.style.backgroundColor = '#3A9A00'; 
       input.style.backgroundColor = '#3A9A00';
       input.style.color = 'white';
 
@@ -171,16 +168,15 @@ document.addEventListener('DOMContentLoaded', function() {
       seconds.innerHTML = time + 's';
 
       // announce answer
-      question.innerHTML = nums.response + ' is incorrect';
+      submitButton.innerHTML = nums.response + ' is incorrect';
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
       
       // adjust stylings
-      question.style.backgroundColor = '#ff726f';
-      question.style.fontStyle = 'italic';
-      question.style.fontWeight = 'normal';
-      questionDiv.style.width = '500px';
       input.style.backgroundColor = '#ff726f';
       input.style.color = 'white';
+
+      // reset new question button
+      question.innerHTML = 'New question';
 
       // focus on new question button
       focusButton();
