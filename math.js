@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // #questionButton click
   question.onclick = () => { 
+
+    // focus form, autocomplete off
+    focusForm();
+
     // generate math problem
     let nums = getNums();
     console.log(nums);
