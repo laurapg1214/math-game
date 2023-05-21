@@ -50,22 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let time = 10;
 
   // timer function
-  var timer = () => {
+  var timerRound = () => {
     time++;
     seconds.innerHTML = time + 's';
     return time;
-  }
-
-  // link to inner html of h2
-  timer.innerHTML = time + 's';
-
-  // clock animation function
-  var clockAnimation = (time) => {
-    clock.style.display = 'inline';
-    clock.style.position = 'relative';
-    clock.style.animationName = 'move';
-    clock.style.animationDuration = time + 's';
-    clock.style.animationFillMode = 'forwards';
   }
 
   // #questionButton click
@@ -77,8 +65,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // start clock sound
     clockSound.play();
 
-    // start animation
-    clockAnimation(time);
+    // countdown function
+    var countdown = () => {
+      if (time > 1) {
+        time--;
+        seconds.innerHTML = time + 's';
+      } else {
+        // stop countdown
+        clearInterval(startCountdown);
+        // reset timer to timeStart number
+        time = timeStart;
+        // submit 
+        submitButton.click();
+      }
+    }
+
+    // start countdown, storing current timer value
+    let timeStart = time;
+    var startCountdown = setInterval(countdown, 1000);
 
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
@@ -125,10 +129,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // correct response function
     var correct = () => {
+      // stop countdown
+      clearInterval(startCountdown);
+
+      // reset time
+      time = timeStart;
+
       // play correct chime
       chimeCorrect.play();
-      time = timer(time);
-      console.log(time);
+
+      // update timer
+      time = timerRound(time);
+      seconds.innerHTML = time + 's';
 
       // announce answer
       question.innerHTML = 'Correct!'
@@ -145,6 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // incorrect response function
     var incorrect = () => {
+      // stop countdown
+      clearInterval(startCountdown);
+
+      // reset time
+      time = timeStart;
+
       // play incorrect chime
       chimeIncorrect.play();
 
