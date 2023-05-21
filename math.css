@@ -19,6 +19,7 @@ h1 {
   font-weight: bold;
   font-weight: normal;
   font-size: 1.3em;
+  color: white;
 }
 
 #question {
@@ -26,7 +27,7 @@ h1 {
 }
 
 #newQuestion {
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 #answerText {

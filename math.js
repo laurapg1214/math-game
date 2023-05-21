@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var newQuestion = document.querySelector('#newQuestion');
   var input1 = document.querySelector('#answerText');
   var form1 = document.querySelector('#inputSection');
+  var questionDiv = document.querySelector('.question');
 
   // on #questionButton click, display question
   newQuestion.onclick = () => {
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
     question.style.fontWeight = 'bold';
+    question.style.color = 'white';
+    question.style.fontStyle = 'normal';
     question.class = '"btn btn-secondary btn-block"';
 
     // on submit, generate answer; change answer to fixed; hide submit button
@@ -65,8 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // grab input, convert to number
       const response = Number(document.querySelector('#answerText').value);
+
+      // assign to nums object
+      Object.assign(nums, {'response': response});
+      console.log(nums);
       
-      if (answer == response) {
+      if (answer == nums.response) {
         correct();
       } else {
         incorrect();
@@ -77,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var correct = () => {
       question.style.backgroundColor = 'green';
       question.innerHTML = 'Correct!'
-      question.style.fontWeight = 'normal';
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
       input.style.backgroundColor = 'green';
       input.style.color = 'white';
@@ -85,12 +91,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // incorrect response function
     var incorrect = () => {
-      question.style.backgroundColor = 'red';
-      question.innerHTML = 'Incorrect'
+      question.style.backgroundColor = '#ff726f';
+      question.style.color = 'black';
+      question.style.fontStyle = 'italic';
       question.style.fontWeight = 'normal';
+      question.innerHTML = nums.response + ' is incorrect';
+      questionDiv.style.width = '500px';
+      console.log(question);
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
-      input.style.backgroundColor = 'red';
-      input.style.color = 'white';
+      input.style.backgroundColor = '#ff726f';
     }
 
     // TODO: create timer
