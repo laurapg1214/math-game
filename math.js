@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const submitButton = document.querySelector('#submit');
   const seconds = document.querySelector('#seconds');
   
+  // disable submit button
+  submitButton.disabled = true;
+  console.log(submitButton);
 
   // focus functions
   focusForm = () => {
@@ -60,10 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let nums = getNums();
     console.log(nums);
 
-    // darken submit button
+    // disable question button
+    question.disabled = true;
+
+    // enable & darken submit button
+    submitButton.disabled = false;
     submitButton.style.backgroundColor = '#4682B4';
-    submitButton.style.color = 'black';
+    submitButton.style.color = 'white';
     submitButton.style.fontWeight = 'bold';
+    submitButton.innerHTML = 'Submit';
 
     // start clock sound
     clockSound.play();
@@ -93,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
     input.value = '';
-    submitButton.innerHTML = 'Submit';
     focusForm();
 
     // event listener for enter key (submit)
@@ -108,7 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // submit button functionality
     submitButton.onclick = () => {
       // disable submit button
-      submitButton.disabled = 'false';
+      submitButton.disabled = true;
+
+      // reset new question button + focus
+      question.innerHTML = 'New question';
+      question.disabled = false;
+      focusButton();
 
       // stop clock sound & reset
       clockSound.pause();
@@ -144,7 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
       seconds.innerHTML = time + 's';
 
       // announce answer
-      question.innerHTML = 'New question';
       submitButton.innerHTML = 'Correct!';
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer;
 
@@ -152,10 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
       input.style.backgroundColor = '#3A9A00';
       input.style.color = 'white';
       submitButton.style.backgroundColor = '#3A9A00';
-      submitButton.style.color = 'white';
-
-      // focus on new question button
-      focusButton();
+      submitButton.style.color = 'black';
     }
 
     // incorrect response function
@@ -181,13 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
       input.style.backgroundColor = '#ff726f';
       input.style.color = 'white';
       submitButton.style.backgroundColor = '#ff726f';
-      submitButton.style.color = 'white';
-
-      // reset new question button
-      question.innerHTML = 'New question';
-
-      // focus on new question button
-      focusButton();
+      submitButton.style.color = 'black';
     }
   }
 });
