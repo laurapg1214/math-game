@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var newQuestion = document.querySelector('#newQuestion');
   var input = document.querySelector('#answerText');
   var questionDiv = document.querySelector('.question');
-  var submit = document.querySelector('#submit');
+  var submitButton = document.querySelector('#submit');
+  var clockSound = document.querySelector('#clockSound');
+  var chime = document.querySelector('#chime');
 
   // focus functions
   focusForm = () => {
@@ -43,21 +45,28 @@ document.addEventListener('DOMContentLoaded', function() {
     newQuestion.focus();
   }
 
-  // on #questionButton click, display question
+  // TODO: create timer
+  var timer = () => {
+
+  }
+
+  // #questionButton click
   newQuestion.onclick = () => { 
     // generate math problem
     let nums = getNums();
     console.log(nums);
 
+    clockSound.play();
+
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
-    question.style.backgroundColor = 'gray';
+    question.className = 'btn btn-primary';
+    question.style.fontWeight = 'bold';
+    question.style.fontStyle = 'normal';
+    question.style.backgroundColor = '#00008B';
     input.style.backgroundColor = 'white';
     input.value = '';
-    submit.className = 'btn btn-info';
-    question.style.fontWeight = 'bold';
-    question.style.color = 'white';
-    question.style.fontStyle = 'normal';
+    submitButton.className = 'btn btn-info';
     focusForm();
 
     // event listener for enter key (submit)
@@ -65,14 +74,18 @@ document.addEventListener('DOMContentLoaded', function() {
       if (event.key === 'Enter') {
         event.preventDefault();
         // trigger submit button element with click
-        submit.click()
+        submitButton.click()
       }
     });
 
     // submit button functionality
-    submit.onclick = () => {
+    submitButton.onclick = () => {
       // disable submit button, change button type
-      submit.className = 'btn btn-dark disabled';
+      submitButton.className = 'btn btn-dark disabled';
+
+      // stop clock sound & reset
+      clockSound.pause();
+      clockSound.currentTime = 0;
 
       // grab input, convert to number
       const response = Number(input.value);
@@ -90,28 +103,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // correct response function
     var correct = () => {
-      question.style.backgroundColor = '#3A9A00';
+      // play correct chime
+      chimeCorrect.play();
+
+      // announce answer
       question.innerHTML = 'Correct!'
-      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
+      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer;
+
+      // adjust stylings
+      question.style.backgroundColor = '#3A9A00'; 
       input.style.backgroundColor = '#3A9A00';
       input.style.color = 'white';
+
+      // focus on new question button
       focusButton();
     }
 
     // incorrect response function
     var incorrect = () => {
+      // play incorrect chime
+      chimeIncorrect.play();
+
+      // announce answer
+      question.innerHTML = nums.response + ' is incorrect';
+      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
+      
+      // adjust stylings
       question.style.backgroundColor = '#ff726f';
-      question.style.color = 'black';
       question.style.fontStyle = 'italic';
       question.style.fontWeight = 'normal';
-      question.innerHTML = nums.response + ' is incorrect';
       questionDiv.style.width = '500px';
-      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
       input.style.backgroundColor = '#ff726f';
+      input.style.color = 'white';
+
+      // focus on new question button
       focusButton();
     }
-
-    // TODO: create timer
   }
     
 
