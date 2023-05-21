@@ -19,15 +19,26 @@ document.addEventListener('DOMContentLoaded', function() {
   // grab elements
   var question = document.querySelector('#question');
   var newQuestion = document.querySelector('#newQuestion');
-  var input1 = document.querySelector('#answerText');
-  var form1 = document.querySelector('#inputSection');
+  var input = document.querySelector('#answerText');
   var questionDiv = document.querySelector('.question');
+  var submit = document.querySelector('#submit');
+
+  // focus functions
+  focusForm = () => {
+    input.focus();
+    input.autocomplete = 'off';
+  }
+
+  focusButton = () => {
+    newQuestion.focus();
+  }
 
   // on #questionButton click, display question
   newQuestion.onclick = () => {
     question.style.backgroundColor = 'gray';
-    input1.style.backgroundColor = 'white';
-    form1.innerHTML = '<input class="answer" type="text" placeholder="type your answer here" id="answerText" autofocus />';
+    input.style.backgroundColor = 'white';
+    input.value = '';
+    focusForm();
     
     // getNums function as object
     var getNums = () => {
@@ -46,12 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     question.style.fontWeight = 'bold';
     question.style.color = 'white';
     question.style.fontStyle = 'normal';
-    question.class = '"btn btn-secondary btn-block"';
 
     // on submit, generate answer; change answer to fixed; hide submit button
-    var submit = document.querySelector('#submit');
-    var input = document.querySelector('#answerText');
-
     // event listener for enter key
     input.addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
@@ -67,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const answer = calculate(nums.x, nums.y);
 
       // grab input, convert to number
-      const response = Number(document.querySelector('#answerText').value);
+      const response = Number(input.value);
 
       // assign to nums object
       Object.assign(nums, {'response': response});
@@ -87,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
       input.style.backgroundColor = 'green';
       input.style.color = 'white';
+      focusButton();
     }
 
     // incorrect response function
@@ -97,9 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
       question.style.fontWeight = 'normal';
       question.innerHTML = nums.response + ' is incorrect';
       questionDiv.style.width = '500px';
-      console.log(question);
       input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
       input.style.backgroundColor = '#ff726f';
+      focusButton();
     }
 
     // TODO: create timer
