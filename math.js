@@ -16,6 +16,16 @@ document.addEventListener('DOMContentLoaded', function() {
     return x + y;
   }
 
+  // getNums function as object
+  var getNums = () => {
+    let x = generateX(),
+        y =  generateY(),
+        answer = calculate(x, y);
+
+    // return values
+    return {x, y, answer};
+  }
+
   // grab elements
   var question = document.querySelector('#question');
   var newQuestion = document.querySelector('#newQuestion');
@@ -38,17 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
     question.style.backgroundColor = 'gray';
     input.style.backgroundColor = 'white';
     input.value = '';
+    submit.className = 'btn btn-primary';
     focusForm();
     
-    // getNums function as object
-    var getNums = () => {
-      let x = generateX(),
-          y =  generateY(),
-          answer = calculate(x, y);
-
-      // return values
-      return {x, y, answer};
-    }
     let nums = getNums();
     console.log(nums);
 
@@ -60,16 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // on submit, generate answer; change answer to fixed; hide submit button
     // event listener for enter key
-    input.addEventListener('keypress', function(event) {
+    input.addEventListener('keypress', function(event) {  
       if (event.key === 'Enter') {
         event.preventDefault();
         // trigger submit button element with click
         submit.click()
       }
-    })
+    });
 
     // submit button functionality
     submit.onclick = () => {
+      // disable submit button, change button type
+      submit.className = 'btn btn-dark disabled';
       // run answer function to get correct answer
       const answer = calculate(nums.x, nums.y);
 
