@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // grab elements
   const question = document.querySelector('#question');
   const input = document.querySelector('#answerText');
-  const questionDiv = document.querySelector('.question');
   const submitButton = document.querySelector('#submit');
   const seconds = document.querySelector('#seconds');
+  const correctScore = document.querySelector('#correct');
+  const incorrectScore = document.querySelector('#incorrect');
   
   // disable submit button
   submitButton.disabled = true;
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     question.focus();
   }
 
-  // time variable
+  // set timer
   let time = 10;
 
   // timer function
@@ -57,8 +58,46 @@ document.addEventListener('DOMContentLoaded', function() {
     return time;
   }
 
+  var startCountdown;
+
+  var endGame = () => {
+    // stop countdown
+    clearInterval(startCountdown);
+
+    // pause clock sound, play buzzer
+    clockSound.pause();
+    buzzer.play();
+
+    // reset time
+    time = 10;
+    seconds.innerHTML = time + 's';
+
+    // display game over
+    submitButton.innerHTML = 'Game over!';
+    submitButton.style.backgroundColor = 'red';
+
+    // reset start game button, give focus
+    question.innerHTML = 'Start game';
+    question.disabled = false;
+    focusButton();
+
+    // reset input field, focus form
+    input.value = '';
+
+    // disable submit button
+    submitButton.disabled = true;
+  }
+
   // #questionButton click
   question.onclick = () => { 
+
+    // reset score counters
+    let correctCount = 0;
+    correctScore.innerHTML = '|| Correct: ' + correctCount;
+    correctScore.style.color = '#152238';
+    let incorrectCount = 0;
+    incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
+    incorrectScore.style.color = '#152238';
 
     // focus form, autocomplete off
     focusForm();
@@ -86,18 +125,12 @@ document.addEventListener('DOMContentLoaded', function() {
         time--;
         seconds.innerHTML = time + 's';
       } else {
-        // stop countdown
-        clearInterval(startCountdown);
-        // reset timer to timeStart number
-        time = timeStart;
-        // submit 
-        submitButton.click();
+        endGame();
       }
     }
 
-    // start countdown, storing current timer value
-    let timeStart = time;
-    var startCountdown = setInterval(countdown, 1000);
+    // start countdown
+    startCountdown = setInterval(countdown, 1000);
 
     // update page elements
     question.innerHTML = nums.x + ' + ' + nums.y;
@@ -118,18 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // submit button functionality
     submitButton.onclick = () => {
-      // disable submit button
-      submitButton.disabled = true;
-
-      // reset new question button + focus
-      question.innerHTML = 'New question';
-      question.disabled = false;
-      focusButton();
-
-      // stop clock sound & reset
-      clockSound.pause();
-      clockSound.currentTime = 0;
-
       // grab input, convert to number
       const response = Number(input.value);
 
@@ -146,54 +167,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // correct response function
     var correct = () => {
-      // stop countdown
-      clearInterval(startCountdown);
-
-      // reset time
-      time = timeStart;
 
       // play correct chime
       chimeCorrect.play();
 
+      // update correct score, change color
+      if (correctCount == 0) {
+        correctScore.style.color = '#006400';
+      }
+      correctCount++;
+      console.log(correctCount);
+      correctScore.innerHTML = '|| Correct: ' + correctCount;
+
       // update timer
-      time = timerRound(time);
+      time++;
       seconds.innerHTML = time + 's';
-
-      // announce answer
-      submitButton.innerHTML = 'Correct!';
-      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer;
-
-      // adjust stylings
-      input.style.backgroundColor = '#3A9A00';
-      input.style.color = 'white';
-      submitButton.style.backgroundColor = '#3A9A00';
-      submitButton.style.color = 'black';
     }
 
     // incorrect response function
     var incorrect = () => {
-      // stop countdown
-      clearInterval(startCountdown);
-
-      // reset time
-      time = timeStart;
-
       // play incorrect chime
       chimeIncorrect.play();
 
-      // reset timer
-      time = 10;
-      seconds.innerHTML = time + 's';
-
-      // announce answer
-      submitButton.innerHTML = nums.response + ' is incorrect';
-      input.value = nums.x + ' + ' + nums.y + ' = ' + nums.answer; 
-      
-      // adjust stylings
-      input.style.backgroundColor = '#ff726f';
-      input.style.color = 'white';
-      submitButton.style.backgroundColor = '#ff726f';
-      submitButton.style.color = 'black';
+      // update incorrect score, change color
+      console.log(incorrectCount);
+      if (incorrectCount == 0) {
+        incorrectScore.style.color = '#B90E0A';
+      }
+      incorrectCount++;
+      incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
     }
   }
 });
