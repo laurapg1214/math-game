@@ -1,5 +1,19 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // grab elements
+  const question = document.querySelector('#question');
+  const input = document.querySelector('#answerText');
+  const submitButton = document.querySelector('#submit');
+  const seconds = document.querySelector('#seconds');
+  const correctScore = document.querySelector('#correct');
+  const incorrectScore = document.querySelector('#incorrect');
+
+  // declare nums objects
+  nums = {};
+  
+  // disable submit button
+  submitButton.disabled = true;
+  
   // randomly generate variables
   var generateX = () => {
     let x = Math.floor((Math.random() * 12) + 1);
@@ -26,18 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return {x, y, answer};
   }
 
-  // grab elements
-  const question = document.querySelector('#question');
-  const input = document.querySelector('#answerText');
-  const submitButton = document.querySelector('#submit');
-  const seconds = document.querySelector('#seconds');
-  const correctScore = document.querySelector('#correct');
-  const incorrectScore = document.querySelector('#incorrect');
-  
-  // disable submit button
-  submitButton.disabled = true;
-  console.log(submitButton);
-
   // focus functions
   focusForm = () => {
     input.focus();
@@ -48,15 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     question.focus();
   }
 
-  // set timer
+  // declare counters
   let time = 10;
-
-  // timer function
-  var timerRound = () => {
-    time++;
-    seconds.innerHTML = time + 's';
-    return time;
-  }
+  var correctCount;
+  var incorrectCount;
 
   var startCountdown;
 
@@ -88,23 +85,43 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.disabled = true;
   }
 
-  // #questionButton click
+  // define math problem function
+  var mathProblem = () => {
+    // focus form, autocomplete off
+    focusForm();
+
+    // generate math problem
+    nums = getNums();
+    console.log(nums);
+
+    // update page elements
+    question.innerHTML = nums.x + ' + ' + nums.y;
+    question.className = 'btn btn-primary';
+    question.style.fontStyle = 'normal';
+    input.style.backgroundColor = 'white';
+    input.value = '';
+
+    // event listener for enter key (submit)
+    input.addEventListener('keypress', function(event) {  
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        // trigger submit button element with click
+        submitButton.click()
+      }
+    });
+  }
+
+  // #questionButton click to start game
   question.onclick = () => { 
 
     // reset score counters
     let correctCount = 0;
+    console.log(correctCount);
     correctScore.innerHTML = '|| Correct: ' + correctCount;
     correctScore.style.color = '#152238';
     let incorrectCount = 0;
     incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
     incorrectScore.style.color = '#152238';
-
-    // focus form, autocomplete off
-    focusForm();
-
-    // generate math problem
-    let nums = getNums();
-    console.log(nums);
 
     // disable question button
     question.disabled = true;
@@ -132,22 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // start countdown
     startCountdown = setInterval(countdown, 1000);
 
-    // update page elements
-    question.innerHTML = nums.x + ' + ' + nums.y;
-    question.className = 'btn btn-primary';
-    question.style.fontStyle = 'normal';
-    input.style.backgroundColor = 'white';
-    input.value = '';
-    focusForm();
-
-    // event listener for enter key (submit)
-    input.addEventListener('keypress', function(event) {  
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        // trigger submit button element with click
-        submitButton.click()
-      }
-    });
+    // run math problem function
+    mathProblem();
+  }
 
     // submit button functionality
     submitButton.onclick = () => {
@@ -163,6 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         incorrect();
       }
+
+      // new question
+      mathProblem();
     }
 
     // correct response function
@@ -176,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         correctScore.style.color = '#006400';
       }
       correctCount++;
-      console.log(correctCount);
       correctScore.innerHTML = '|| Correct: ' + correctCount;
 
       // update timer
@@ -197,5 +203,4 @@ document.addEventListener('DOMContentLoaded', function() {
       incorrectCount++;
       incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
     }
-  }
-});
+  });
