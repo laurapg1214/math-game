@@ -1,25 +1,30 @@
 .container-xl {
   background-color: rgb(222, 231, 224);
-  padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 50px;
 }
 
 h1 {
   text-align: center;
 }
 
-#clock {
-  width: 35%;
+#clock-container {
   margin: auto;
   display: block;
+  background-image: url("images/clock-edited-bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 300px;
+  height: 300px;
 }
 
 #seconds {
   font-size: 5em;
-  margin-top: -183px;
+  padding-top: 94px;
 }
 
 .question {
-  padding: 80px 0px 20px 0px;
+  padding-bottom: 20px;
   margin: auto;
   width: 160px;
 }
