@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // declare nums objects
   nums = {};
   
-  // disable submit button
+  // disable submit button and input field
   submitButton.disabled = true;
+  input.disabled = true;
   
   // randomly generate variables
   var generateX = () => {
@@ -70,19 +71,22 @@ document.addEventListener('DOMContentLoaded', function() {
     seconds.innerHTML = time + 's';
 
     // display game over
-    submitButton.innerHTML = 'Game over!';
-    submitButton.style.backgroundColor = 'red';
+    submitButton.innerHTML = 'Score: ' + correctCount;
+    submitButton.style.backgroundColor = '#006400';
 
     // reset start game button, give focus
-    question.innerHTML = 'Start game';
+    question.innerHTML = 'New game';
     question.disabled = false;
     focusButton();
 
     // reset input field, focus form
-    input.value = '';
+    input.value = 'Game over!';
+    input.style.color = '#006400';
+    input.style.backgroundColor = 'rgb(255, 254, 200)';
 
-    // disable submit button
+    // disable submit button and input field
     submitButton.disabled = true;
+    input.disabled = true;
   }
 
   // define math problem function
@@ -101,25 +105,17 @@ document.addEventListener('DOMContentLoaded', function() {
     input.style.backgroundColor = 'white';
     input.value = '';
 
-    // event listener for enter key (submit)
-    input.addEventListener('keypress', function(event) {  
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        // trigger submit button element with click
-        submitButton.click()
-      }
-    });
+    return;
   }
 
   // #questionButton click to start game
   question.onclick = () => { 
 
     // reset score counters
-    let correctCount = 0;
-    console.log(correctCount);
+    correctCount = 0;
     correctScore.innerHTML = '|| Correct: ' + correctCount;
     correctScore.style.color = '#152238';
-    let incorrectCount = 0;
+    incorrectCount = 0;
     incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
     incorrectScore.style.color = '#152238';
 
@@ -132,6 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.style.color = 'white';
     submitButton.style.fontWeight = 'bold';
     submitButton.innerHTML = 'Submit';
+
+    // enable input field and add placeholder
+    input.disabled = false;
+    input.placeholder = 'type your answer here';
 
     // start clock sound
     clockSound.play();
@@ -153,54 +153,66 @@ document.addEventListener('DOMContentLoaded', function() {
     mathProblem();
   }
 
-    // submit button functionality
-    submitButton.onclick = () => {
-      // grab input, convert to number
-      const response = Number(input.value);
-
-      // assign to nums object
-      Object.assign(nums, {'response': response});
-      console.log(nums);
-      
-      if (nums.answer == nums.response) {
-        correct();
-      } else {
-        incorrect();
-      }
-
-      // new question
-      mathProblem();
-    }
-
-    // correct response function
-    var correct = () => {
-
-      // play correct chime
-      chimeCorrect.play();
-
-      // update correct score, change color
-      if (correctCount == 0) {
-        correctScore.style.color = '#006400';
-      }
-      correctCount++;
-      correctScore.innerHTML = '|| Correct: ' + correctCount;
-
-      // update timer
-      time++;
-      seconds.innerHTML = time + 's';
-    }
-
-    // incorrect response function
-    var incorrect = () => {
-      // play incorrect chime
-      chimeIncorrect.play();
-
-      // update incorrect score, change color
-      console.log(incorrectCount);
-      if (incorrectCount == 0) {
-        incorrectScore.style.color = '#B90E0A';
-      }
-      incorrectCount++;
-      incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
+  // event listener for enter key (submit)
+  input.addEventListener('keypress', function(event) {  
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      // trigger submit button element with click
+      submitButton.click()
     }
   });
+
+  // submit button functionality
+  submitButton.onclick = () => {
+    // grab input, convert to number
+    const response = Number(input.value);
+
+    // assign to nums object
+    Object.assign(nums, {'response': response});
+    console.log(nums);
+    
+    if (nums.answer == nums.response) {
+      correct();
+    } else {
+      incorrect();
+    }
+    return;
+  }
+
+  // correct response function
+  var correct = () => {
+
+    // play correct chime
+    chimeCorrect.play();
+
+    // update correct score, change color
+    if (correctCount == 0) {
+      correctScore.style.color = '#006400';
+    }
+    correctCount++;
+    correctScore.innerHTML = '|| Correct: ' + correctCount;
+
+    // update timer
+    time++;
+    seconds.innerHTML = time + 's';
+
+    // new question
+    mathProblem();
+  }
+
+  // incorrect response function
+  var incorrect = () => {
+    // play incorrect chime
+    chimeIncorrect.play();
+
+    // update incorrect score, change color
+    if (incorrectCount == 0) {
+      incorrectScore.style.color = '#B90E0A';
+    }
+    incorrectCount++;
+    incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
+
+    // new question
+    mathProblem();
+  }
+});

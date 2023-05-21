@@ -8,6 +8,7 @@
 h1 {
   text-align: center;
   font-size: 1.5em;
+  color: #152238;
 }
 
 #clock-container {
@@ -33,7 +34,7 @@ h1 {
   text-align: center;
   font-weight: bold;
   color: white;
-  background-color: #00008B;
+  background-color: #23395d;
 }
 
 #inputSection {
@@ -44,7 +45,8 @@ h1 {
   text-align: center;
   font-weight: bold;
   padding: 20px 0px 20px 0px;
-  background-color: white;
+  background-color: rgb(255, 254, 200);
+  color: #152238;
   width: 60%;
 }
 
