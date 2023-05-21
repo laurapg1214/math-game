@@ -7,12 +7,19 @@ h1 {
   text-align: center;
 }
 
+#clock {
+  width: 35%;
+  margin: auto;
+  display: block;
+}
+
 #seconds {
   font-size: 5em;
+  margin-top: -183px;
 }
 
 .question {
-  padding: 20px 0px 20px 0px;
+  padding: 80px 0px 20px 0px;
   margin: auto;
   width: 160px;
 }
@@ -41,6 +48,7 @@ h1 {
 #submit {
   margin-top: 20px;
   font-size: 1.3em;
+  background-color: grey;
 }
 
 .btn {

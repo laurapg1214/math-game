@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let nums = getNums();
     console.log(nums);
 
+    // darken submit button
+    submitButton.style.backgroundColor = '#4682B4';
+    submitButton.style.color = 'black';
+    submitButton.style.fontWeight = 'bold';
+
     // start clock sound
     clockSound.play();
 
@@ -88,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
     input.value = '';
-    submitButton.className = 'btn btn-info';
     submitButton.innerHTML = 'Submit';
     focusForm();
 
@@ -103,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // submit button functionality
     submitButton.onclick = () => {
-      // disable submit button, change button type
-      submitButton.className = 'btn btn-dark disabled';
+      // disable submit button
+      submitButton.disabled = 'false';
 
       // stop clock sound & reset
       clockSound.pause();
@@ -147,6 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // adjust stylings
       input.style.backgroundColor = '#3A9A00';
       input.style.color = 'white';
+      submitButton.style.backgroundColor = '#3A9A00';
+      submitButton.style.color = 'white';
 
       // focus on new question button
       focusButton();
@@ -174,6 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // adjust stylings
       input.style.backgroundColor = '#ff726f';
       input.style.color = 'white';
+      submitButton.style.backgroundColor = '#ff726f';
+      submitButton.style.color = 'white';
 
       // reset new question button
       question.innerHTML = 'New question';
