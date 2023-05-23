@@ -33,28 +33,46 @@ document.addEventListener('DOMContentLoaded', function() {
   // MATH PROBLEM FUNCTIONALITY
   // randomly generate variables
   generateX = () => {
-    let x = Math.floor((Math.random() * 12) + 1);
+    let x = Math.floor((Math.random() * nums.maxNum) + 1);
     return x;
   }
 
   generateY = () => {
-    let y = Math.floor((Math.random() * 12) + 1);
+    let y = Math.floor((Math.random() * nums.maxNum) + 1);
     return y;
   }
 
+  // randomly select math operator from array (ro for random operator)
+  generateZ = () => {
+    var operators = ['+', '-', '*', '/'];
+    let z = operators[Math.floor(Math.random()*operators.length)];
+    return z;
+  }
+
   // generate question variables and answer
-  calculate = (x, y) => {
-    return x + y;
+  calculate = (x, y, z) => {
+    switch (z) {
+      case '+':
+        return x + y;
+      case '-':
+        return x - y;
+      case '*':
+        return x * y;
+      default:
+        return x / y;
+    }
+    return (x + y);
   }
 
   // getNums function as object
-  getNums = () => {
+  getMath = () => {
     let x = generateX(),
         y =  generateY(),
-        answer = calculate(x, y);
+        z = generateZ(),
+        answer = calculate(x, y, z);
 
     // return values
-    return {x, y, answer};
+    return {x, y, z, answer};
   }
 
   // BUTTON FUNCTIONALITIES
@@ -132,12 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // TODO: define max number prompt function
   maxNumPrompt = () => {
-    console.log('hi!');
     focusForm();
     question.innerHTML = 'What maximum number do you want to use for your math problems?';
     input.value = '';
     input.placeholder = 'Enter number here';
-    input.style.backgroundColor = 'rgb(255, 254, 200)';
+    input.style.backgroundColor = 'white';
+    
     // see submit button functionality above
   }
 
@@ -179,11 +197,11 @@ document.addEventListener('DOMContentLoaded', function() {
     focusForm();
 
     // generate math problem, assign to object
-    math = getNums();
+    math = getMath();
     console.log(math);
 
     // update page elements
-    question.innerHTML = math.x + ' + ' + math.y;
+    question.innerHTML = math.x + math.z + math.y;
     question.className = 'btn btn-primary';
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
