@@ -1,6 +1,6 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
-  // ORDER: setup, start game, in-game, end game
+  // ORDER: setup, start game, play game in-game, end game
   // VARIABLE & OBJECT STRUCTURING, INITIAL WINDOW STATE
   // breakdown: 2 objects:
   // math (to store math problem & answer variables)
@@ -59,14 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /////////////////////////////////////////////////
 
-  // START GAME #questionButton click to start game
-  question.onclick = () => { 
-
-    // if start, hide instructions, make game area visible
-    if (gameArea.style.display = 'none') {
-      instructions.style.display = 'none';
-      gameArea.style.display = 'block';
-    }
+  // START GAME
+  startGame = () => {
+    instructions.style.display = 'none';
+    gameArea.style.display = 'block';
+    focusForm();
 
     // reset maxNum & score counters
     nums.maxNum = 0;
@@ -91,9 +88,33 @@ document.addEventListener('DOMContentLoaded', function() {
     input.disabled = false;
 
     // TODO: run maxNum input grab function
-    // maxNumPrompt();
-    console.log(nums.maxNum);
+    maxNumPrompt();
+  }
 
+  // TODO: define max number prompt function
+  maxNumPrompt = () => {
+    console.log('hi!');
+    question.innerHTML = 'What maximum number do you want to use for your math problems?';
+    input.placeholder = 'Enter number here';
+    submitButton.onclick = () => {
+      let x = Number(input.value);
+      //reset input field
+      input.value = '';
+      if (isNaN(x) || x <= 0) {
+        // rerun function
+        maxNumPrompt();
+      } else {
+        // assign to maxNum
+        nums.maxNum = x;
+        console.log(nums.maxNum);
+        // start game 
+        playGame();
+      }
+    }
+  }
+
+  // play game function
+  playGame = () => {
     // reset input field w placeholder
     input.value = '';
     input.placeholder = 'Type your answer here';
@@ -111,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mathProblem();
   }
 
-  ///////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////
 
   // IN-GAME FUNCTIONS
   // countdown function
@@ -122,23 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       endGame();
     }
-  }
-
-  // TODO: define max number prompt function
-  maxNumPrompt = () => {
-    while (nums.maxNum == 0) {
-      question.innerHTML = 'Max number';
-      input.placeholder = 'Enter maximum number for math questions';
-      submitButton.onclick = () => {
-        nums.maxNum = Number(input.value)
-        // if (isNaN(input.value) || Number(input.value) <= 0) {
-          // console.log('NO!');
-        // } else {
-          // nums.maxNum = Number(input.value)
-        // }
-      }
-    }
-    console.log('Hi!');
   }
 
   // math problem function
@@ -160,18 +164,31 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
+  // question button functionality
+  question.onclick = () => {
+    // hide instructions, make game area visible, maxNum set
+    if (gameArea.style.display = 'none') {
+      startGame();
+    } else {
+      maxNumPrompt();
+    }
+
+  }
+
   // submit button functionality
-  submitButton.onclick = () => {
-    // grab input, convert to number
-    const response = Number(input.value);
-      
-    // assign to math object
-    math.response = response;
-    console.log(math);
-  
-    // check answer
-    checkAnswer();
-    return;
+  if (nums.maxNum != 0) {
+    submitButton.onclick = () => {
+      // grab input, convert to number
+      const response = Number(input.value);
+        
+      // assign to math object
+      math.response = response;
+      console.log(math);
+    
+      // check answer
+      checkAnswer();
+      return;
+    } 
   }
 
   // event listener for enter key (submit)
