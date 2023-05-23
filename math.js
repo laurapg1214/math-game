@@ -1,7 +1,7 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
-  
-  // VARIABLE/OBJECT STRUCTURING, INITIAL WINDOW STATE
+  // ORDER: setup, start game, in-game, end game
+  // VARIABLE & OBJECT STRUCTURING, INITIAL WINDOW STATE
   // breakdown: 2 objects:
   // math (to store math problem & answer variables)
   math = {};
@@ -29,30 +29,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // declare countdown var
   var startCountdown;
-  
-  // disable submit button and input field
-  submitButton.disabled = true;
-  input.disabled = true;
 
   // MATH PROBLEM FUNCTIONALITY
   // randomly generate variables
-  var generateX = () => {
+  generateX = () => {
     let x = Math.floor((Math.random() * 12) + 1);
     return x;
   }
 
-  var generateY = () => {
+  generateY = () => {
     let y = Math.floor((Math.random() * 12) + 1);
     return y;
   }
 
   // generate question variables and answer
-  var calculate = (x, y) => {
+  calculate = (x, y) => {
     return x + y;
   }
 
   // getNums function as object
-  var getNums = () => {
+  getNums = () => {
     let x = generateX(),
         y =  generateY(),
         answer = calculate(x, y);
@@ -60,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // return values
     return {x, y, answer};
   }
+
+  /////////////////////////////////////////////////
 
   // START GAME #questionButton click to start game
   question.onclick = () => { 
@@ -70,7 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
       gameArea.style.display = 'block';
     }
 
-    // reset score counters
+    // reset maxNum & score counters
+    nums.maxNum = 0;
     nums.correctCount = 0;
     correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
     correctScore.style.color = '#152238';
@@ -88,13 +87,16 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.style.fontWeight = 'bold';
     submitButton.innerHTML = 'Submit';
 
-    // enable input field and add placeholder
+    // enable input field 
     input.disabled = false;
-    input.placeholder = 'Type your answer here';
 
     // TODO: run maxNum input grab function
     // maxNumPrompt();
-    // console.log(maxNum);
+    console.log(nums.maxNum);
+
+    // reset input field w placeholder
+    input.value = '';
+    input.placeholder = 'Type your answer here';
 
     // start clock sound
     clockSound.play();
@@ -109,9 +111,11 @@ document.addEventListener('DOMContentLoaded', function() {
     mathProblem();
   }
 
+  ///////////////////////////////////////////////////////
+
   // IN-GAME FUNCTIONS
   // countdown function
-  var countdown = () => {
+  countdown = () => {
     if (nums.time > 1) {
       nums.time--;
       seconds.innerHTML = nums.time + 's';
@@ -121,15 +125,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // TODO: define max number prompt function
-  var maxNumPrompt = () => {
-    nums.maxNum = 0;
-    question.innerHTML = 'Max number';
-    input.placeholder = 'Enter maximum number for math questions';
-    
+  maxNumPrompt = () => {
+    while (nums.maxNum == 0) {
+      question.innerHTML = 'Max number';
+      input.placeholder = 'Enter maximum number for math questions';
+      submitButton.onclick = () => {
+        nums.maxNum = Number(input.value)
+        // if (isNaN(input.value) || Number(input.value) <= 0) {
+          // console.log('NO!');
+        // } else {
+          // nums.maxNum = Number(input.value)
+        // }
+      }
+    }
+    console.log('Hi!');
   }
 
-  // define math problem function
-  var mathProblem = () => {
+  // math problem function
+  mathProblem = () => {
     // focus form, autocomplete off
     focusForm();
 
@@ -147,32 +160,17 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // define submit button functionality
+  // submit button functionality
   submitButton.onclick = () => {
     // grab input, convert to number
     const response = Number(input.value);
-
-    // if-else for whether maxNum or game response
-    if (nums.maxNum == 0) {
-      if (response <= 0) {
-        // reprompt for maxNum
-        maxNumPrompt();
-      } else {
-        nums.maxNum = response;
-      }
-      return;
-    } else {
-      // assign to math object
-      math.response = response;
-      console.log(math);
-    
-      // check answer
-      if (math.answer == math.response) {
-        correct();
-      } else {
-        incorrect();
-      }
-    }
+      
+    // assign to math object
+    math.response = response;
+    console.log(math);
+  
+    // check answer
+    checkAnswer();
     return;
   }
 
@@ -185,8 +183,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // check answer function
+  checkAnswer = () => {
+    if (math.answer == math.response) {
+      correct();
+    } else {
+      incorrect();
+    }
+  }
+
   // correct response function
-  var correct = () => {
+  correct = () => {
 
     // play correct chime
     chimeCorrect.play();
@@ -207,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // incorrect response function
-  var incorrect = () => {
+  incorrect = () => {
     // play incorrect chime
     chimeIncorrect.play();
 
@@ -222,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mathProblem();
   }
 
-  // define focus functions
+  // focus functions
   focusForm = () => {
     input.autocomplete = 'off';
     input.focus();
@@ -232,8 +239,10 @@ document.addEventListener('DOMContentLoaded', function() {
     question.focus();
   }
 
-  // END GAME define function
-  var endGame = () => {
+  //////////////////////////////////////////////////
+
+  // END GAME function
+  endGame = () => {
     // stop countdown
     clearInterval(startCountdown);
 
