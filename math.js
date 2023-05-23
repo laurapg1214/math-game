@@ -1,5 +1,7 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
+  
+  // VARIABLE/OBJECT STRUCTURING, INITIAL WINDOW STATE
   // breakdown: 2 objects:
   // math (to store math problem & answer variables)
   math = {};
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
   submitButton.disabled = true;
   input.disabled = true;
 
+  // MATH PROBLEM FUNCTIONALITY
   // randomly generate variables
   var generateX = () => {
     let x = Math.floor((Math.random() * 12) + 1);
@@ -58,76 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return {x, y, answer};
   }
 
-  // focus functions
-  focusForm = () => {
-    input.autocomplete = 'off';
-    input.focus();
-  }
-
-  focusButton = () => {
-    question.focus();
-  }
-
-  var endGame = () => {
-    // stop countdown
-    clearInterval(startCountdown);
-
-    // pause clock sound, play buzzer
-    clockSound.pause();
-    buzzer.play();
-
-    // reset time
-    nums.time = 10;
-    seconds.innerHTML = nums.time + 's';
-
-    // display game over
-    submitButton.innerHTML = 'Score: ' + nums.correctCount;
-    submitButton.style.backgroundColor = '#006400';
-
-    // reset start game button, give focus
-    question.innerHTML = 'New game';
-    question.disabled = false;
-    focusButton();
-
-    // reset input field, focus form
-    input.value = 'Game over!';
-    input.style.color = '#006400';
-    input.style.fontWeight = 'bold';
-    input.style.backgroundColor = 'rgb(255, 254, 200)';
-
-    // disable submit button and input field
-    submitButton.disabled = true;
-    input.disabled = true;
-  }
-
-  // TODO: define max number prompt function
-  // var maxNumPrompt = () => {
-    // let maxNum = 0;
-    // question.innerHTML = 'Maximum number';
-    // input.placeholder = 'Enter maximum number for math questions';
-    // }
-  // }
-
-  // define math problem function
-  var mathProblem = () => {
-    // focus form, autocomplete off
-    focusForm();
-
-    // generate math problem, assign to object
-    math = getNums();
-    console.log(math);
-
-    // update page elements
-    question.innerHTML = math.x + ' + ' + math.y;
-    question.className = 'btn btn-primary';
-    question.style.fontStyle = 'normal';
-    input.style.backgroundColor = 'white';
-    input.value = '';
-
-    return;
-  }
-
-  // #questionButton click to start game
+  // START GAME #questionButton click to start game
   question.onclick = () => { 
 
     // if start, hide instructions, make game area visible
@@ -165,21 +99,81 @@ document.addEventListener('DOMContentLoaded', function() {
     // start clock sound
     clockSound.play();
 
-    // countdown function
-    var countdown = () => {
-      if (nums.time > 1) {
-        nums.time--;
-        seconds.innerHTML = nums.time + 's';
-      } else {
-        endGame();
-      }
-    }
+    // start countdown function
+    countdown();
 
     // start countdown
     startCountdown = setInterval(countdown, 1000);
 
     // run math problem function
     mathProblem();
+  }
+
+  // IN-GAME FUNCTIONS
+  // countdown function
+  var countdown = () => {
+    if (nums.time > 1) {
+      nums.time--;
+      seconds.innerHTML = nums.time + 's';
+    } else {
+      endGame();
+    }
+  }
+
+  // TODO: define max number prompt function
+  var maxNumPrompt = () => {
+    nums.maxNum = 0;
+    question.innerHTML = 'Max number';
+    input.placeholder = 'Enter maximum number for math questions';
+    
+  }
+
+  // define math problem function
+  var mathProblem = () => {
+    // focus form, autocomplete off
+    focusForm();
+
+    // generate math problem, assign to object
+    math = getNums();
+    console.log(math);
+
+    // update page elements
+    question.innerHTML = math.x + ' + ' + math.y;
+    question.className = 'btn btn-primary';
+    question.style.fontStyle = 'normal';
+    input.style.backgroundColor = 'white';
+    input.value = '';
+
+    return;
+  }
+
+  // define submit button functionality
+  submitButton.onclick = () => {
+    // grab input, convert to number
+    const response = Number(input.value);
+
+    // if-else for whether maxNum or game response
+    if (nums.maxNum == 0) {
+      if (response <= 0) {
+        // reprompt for maxNum
+        maxNumPrompt();
+      } else {
+        nums.maxNum = response;
+      }
+      return;
+    } else {
+      // assign to math object
+      math.response = response;
+      console.log(math);
+    
+      // check answer
+      if (math.answer == math.response) {
+        correct();
+      } else {
+        incorrect();
+      }
+    }
+    return;
   }
 
   // event listener for enter key (submit)
@@ -190,33 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.click()
     }
   });
-
-  // submit button functionality
-  submitButton.onclick = () => {
-    // grab input, convert to number
-    const response = Number(input.value);
-
-    // TODO if-else for whether maxNum or game response
-    // if (maxNum == 0) {
-      // if (response <= 0) {
-        // reprompt for maxNum
-        // maxNumPrompt();
-     // } else {
-        // maxNum = response;
-      // }
-    // } else {
-    // assign to math object
-    math.response = response;
-    console.log(math);
-    
-    if (math.answer == math.response) {
-      correct();
-    } else {
-      incorrect();
-    }
-    // }
-    return;
-  }
 
   // correct response function
   var correct = () => {
@@ -253,5 +220,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // new question
     mathProblem();
+  }
+
+  // define focus functions
+  focusForm = () => {
+    input.autocomplete = 'off';
+    input.focus();
+  }
+
+  focusButton = () => {
+    question.focus();
+  }
+
+  // END GAME define function
+  var endGame = () => {
+    // stop countdown
+    clearInterval(startCountdown);
+
+    // pause clock sound, play buzzer
+    clockSound.pause();
+    buzzer.play();
+
+    // reset time
+    nums.time = 10;
+    seconds.innerHTML = nums.time + 's';
+
+    // display game over
+    submitButton.innerHTML = 'Score: ' + nums.correctCount;
+    submitButton.style.backgroundColor = '#006400';
+
+    // reset start game button, give focus
+    question.innerHTML = 'New game';
+    question.disabled = false;
+    focusButton();
+
+    // reset input field, focus form
+    input.value = 'Game over!';
+    input.style.color = '#006400';
+    input.style.fontWeight = 'bold';
+    input.style.backgroundColor = 'rgb(255, 254, 200)';
+
+    // disable submit button and input field
+    submitButton.disabled = true;
+    input.disabled = true;
   }
 });
