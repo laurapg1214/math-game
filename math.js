@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
   startGame = () => {
     instructions.style.display = 'none';
     gameArea.style.display = 'block';
-    focusForm();
 
     // reset maxNum & score counters
     nums.maxNum = 0;
@@ -94,8 +93,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // TODO: define max number prompt function
   maxNumPrompt = () => {
     console.log('hi!');
+    focusForm();
     question.innerHTML = 'What maximum number do you want to use for your math problems?';
+    input.value = '';
     input.placeholder = 'Enter number here';
+    input.style.backgroundColor = 'rgb(255, 254, 200)';
     submitButton.onclick = () => {
       let x = Number(input.value);
       //reset input field
@@ -166,13 +168,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // question button functionality
   question.onclick = () => {
-    // hide instructions, make game area visible, maxNum set
+    // check for beginning or new round
     if (gameArea.style.display = 'none') {
       startGame();
     } else {
       maxNumPrompt();
     }
-
   }
 
   // submit button functionality
@@ -187,18 +188,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
       // check answer
       checkAnswer();
-      return;
     } 
   }
-
-  // event listener for enter key (submit)
-  input.addEventListener('keypress', function(event) {  
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      // trigger submit button element with click
-      submitButton.click()
-    }
-  });
 
   // check answer function
   checkAnswer = () => {
@@ -232,6 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // incorrect response function
   incorrect = () => {
+    console.log('incorrect');
     // play incorrect chime
     chimeIncorrect.play();
 
@@ -245,6 +237,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // new question
     mathProblem();
   }
+
+  // event listener for enter key (submit)
+  input.addEventListener('keypress', function(event) {  
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      // trigger submit button element with click
+      submitButton.click()
+    }
+  });
 
   // focus functions
   focusForm = () => {
