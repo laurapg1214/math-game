@@ -1,5 +1,20 @@
 // DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // breakdown: 2 objects:
+  // math (to store math problem & answer variables)
+  math = {};
+  // nums (to store counters, time etc)
+  nums = {
+    // initialize counters
+    time: 10,
+    correctCount: 0,
+    incorrectCount: 0,
+    
+    // initialize max number
+    maxNum: 0,
+  };
+  console.log(nums);
+
   // grab elements
   const question = document.querySelector('#question');
   const input = document.querySelector('#answerText');
@@ -10,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const instructions = document.querySelector('#instructions');
   const gameArea = document.querySelector('#game-area');
 
-  // declare nums objects
-  nums = {};
+  // declare countdown var
+  var startCountdown;
   
   // disable submit button and input field
   submitButton.disabled = true;
   input.disabled = true;
-  
+
   // randomly generate variables
   var generateX = () => {
     let x = Math.floor((Math.random() * 12) + 1);
@@ -53,13 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
     question.focus();
   }
 
-  // declare counters
-  let time = 10;
-  var correctCount;
-  var incorrectCount;
-
-  var startCountdown;
-
   var endGame = () => {
     // stop countdown
     clearInterval(startCountdown);
@@ -69,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
     buzzer.play();
 
     // reset time
-    time = 10;
-    seconds.innerHTML = time + 's';
+    nums.time = 10;
+    seconds.innerHTML = nums.time + 's';
 
     // display game over
-    submitButton.innerHTML = 'Score: ' + correctCount;
+    submitButton.innerHTML = 'Score: ' + nums.correctCount;
     submitButton.style.backgroundColor = '#006400';
 
     // reset start game button, give focus
@@ -92,17 +100,25 @@ document.addEventListener('DOMContentLoaded', function() {
     input.disabled = true;
   }
 
+  // TODO: define max number prompt function
+  // var maxNumPrompt = () => {
+    // let maxNum = 0;
+    // question.innerHTML = 'Maximum number';
+    // input.placeholder = 'Enter maximum number for math questions';
+    // }
+  // }
+
   // define math problem function
   var mathProblem = () => {
     // focus form, autocomplete off
     focusForm();
 
-    // generate math problem
-    nums = getNums();
-    console.log(nums);
+    // generate math problem, assign to object
+    math = getNums();
+    console.log(math);
 
     // update page elements
-    question.innerHTML = nums.x + ' + ' + nums.y;
+    question.innerHTML = math.x + ' + ' + math.y;
     question.className = 'btn btn-primary';
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
@@ -121,11 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // reset score counters
-    correctCount = 0;
-    correctScore.innerHTML = '|| Correct: ' + correctCount;
+    nums.correctCount = 0;
+    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
     correctScore.style.color = '#152238';
-    incorrectCount = 0;
-    incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
+    nums.incorrectCount = 0;
+    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
     incorrectScore.style.color = '#152238';
 
     // disable question button
@@ -140,16 +156,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // enable input field and add placeholder
     input.disabled = false;
-    input.placeholder = 'type your answer here';
+    input.placeholder = 'Type your answer here';
+
+    // TODO: run maxNum input grab function
+    // maxNumPrompt();
+    // console.log(maxNum);
 
     // start clock sound
     clockSound.play();
 
     // countdown function
     var countdown = () => {
-      if (time > 1) {
-        time--;
-        seconds.innerHTML = time + 's';
+      if (nums.time > 1) {
+        nums.time--;
+        seconds.innerHTML = nums.time + 's';
       } else {
         endGame();
       }
@@ -176,15 +196,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // grab input, convert to number
     const response = Number(input.value);
 
-    // assign to nums object
-    Object.assign(nums, {'response': response});
-    console.log(nums);
+    // TODO if-else for whether maxNum or game response
+    // if (maxNum == 0) {
+      // if (response <= 0) {
+        // reprompt for maxNum
+        // maxNumPrompt();
+     // } else {
+        // maxNum = response;
+      // }
+    // } else {
+    // assign to math object
+    math.response = response;
+    console.log(math);
     
-    if (nums.answer == nums.response) {
+    if (math.answer == math.response) {
       correct();
     } else {
       incorrect();
     }
+    // }
     return;
   }
 
@@ -195,15 +225,15 @@ document.addEventListener('DOMContentLoaded', function() {
     chimeCorrect.play();
 
     // update correct score, change color
-    if (correctCount == 0) {
+    if (nums.correctCount == 0) {
       correctScore.style.color = '#006400';
     }
-    correctCount++;
-    correctScore.innerHTML = '|| Correct: ' + correctCount;
+    nums.correctCount++;
+    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
 
     // update timer
-    time++;
-    seconds.innerHTML = time + 's';
+    nums.time++;
+    seconds.innerHTML = nums.time + 's';
 
     // new question
     mathProblem();
@@ -215,11 +245,11 @@ document.addEventListener('DOMContentLoaded', function() {
     chimeIncorrect.play();
 
     // update incorrect score, change color
-    if (incorrectCount == 0) {
+    if (nums.incorrectCount == 0) {
       incorrectScore.style.color = '#B90E0A';
     }
-    incorrectCount++;
-    incorrectScore.innerHTML = '|| Incorrect: ' + incorrectCount;
+    nums.incorrectCount++;
+    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
 
     // new question
     mathProblem();
