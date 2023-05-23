@@ -57,6 +57,46 @@ document.addEventListener('DOMContentLoaded', function() {
     return {x, y, answer};
   }
 
+  // BUTTON FUNCTIONALITIES
+  // submit button functionality
+  submitButton.onclick = () => {
+    if (nums.maxNum == 0) {
+      let x = Number(input.value);
+      //reset input field
+      input.value = '';
+      if (isNaN(x) || x <= 0) {
+        // rerun function
+        maxNumPrompt();
+      } else {
+        // assign to maxNum
+        nums.maxNum = x;
+        console.log(nums.maxNum);
+        // start game 
+        playGame();
+      }
+    } else {
+      // grab input, convert to number
+      const response = Number(input.value);
+        
+      // assign to math object
+      math.response = response;
+      console.log(math);
+    
+      // check answer
+      checkAnswer();
+    }
+  } 
+
+  // question button functionality
+  question.onclick = () => {
+    // check for beginning or new round
+    if (gameArea.style.display = 'none') {
+      startGame();
+    } else {
+      maxNumPrompt();
+    }
+  }
+
   /////////////////////////////////////////////////
 
   // START GAME
@@ -98,21 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input.value = '';
     input.placeholder = 'Enter number here';
     input.style.backgroundColor = 'rgb(255, 254, 200)';
-    submitButton.onclick = () => {
-      let x = Number(input.value);
-      //reset input field
-      input.value = '';
-      if (isNaN(x) || x <= 0) {
-        // rerun function
-        maxNumPrompt();
-      } else {
-        // assign to maxNum
-        nums.maxNum = x;
-        console.log(nums.maxNum);
-        // start game 
-        playGame();
-      }
-    }
+    // see submit button functionality above
   }
 
   // play game function
@@ -166,31 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // question button functionality
-  question.onclick = () => {
-    // check for beginning or new round
-    if (gameArea.style.display = 'none') {
-      startGame();
-    } else {
-      maxNumPrompt();
-    }
-  }
-
-  // submit button functionality
-  if (nums.maxNum != 0) {
-    submitButton.onclick = () => {
-      // grab input, convert to number
-      const response = Number(input.value);
-        
-      // assign to math object
-      math.response = response;
-      console.log(math);
-    
-      // check answer
-      checkAnswer();
-    } 
-  }
-
   // check answer function
   checkAnswer = () => {
     if (math.answer == math.response) {
@@ -202,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // correct response function
   correct = () => {
-
+    console.log('correct');
     // play correct chime
     chimeCorrect.play();
 
