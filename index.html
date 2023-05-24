@@ -18,22 +18,25 @@
   <div class="container-xl">
     <h1>10-second Math Game</h1>
     <div id="clock-container">
-      <h1 id="seconds">10s</h1>
+      <h1 id="time">10s</h1>
     </div>
     <audio src="sounds/clock.mp3" id="clockSound" loop></audio>
     <audio src="sounds/chimeCorrect.mp3" id="chimeCorrect"></audio>
     <audio src="sounds/chimeIncorrect.mp3" id="chimeIncorrect"></audio>
     <audio src="sounds/buzzer.mp3" id="buzzer"></audio>
     <div class="row question">
-      <button class="btn btn-sm" id="question">Start game</button>
+      <button id="question">Start game</button>
     </div>
-    <p id="instructions">Answer as many questions as you can before the timer runs out!<br>Get one extra second for each correct answer.</p>
+    <div id="instructions">
+      <p>Answer as many questions as you can before the timer runs out!</p>
+      <p>Get one extra second for each correct answer.</p>
+    </div>
     <div id="game-area">
       <form>  
         <input type="text" autocomplete="off" value="" placeholder="" id="answerText" />
       </form>
-      <div class="row">
-        <button class="btn btn-sm" id="submit">Submit</button>
+      <div class="row padding">
+        <button class="btn" id="submit">Submit</button>
       </div>
       <div id="scorecard">
         <div class="row">
