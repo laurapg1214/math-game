@@ -63,12 +63,12 @@ h1 {
   align-items: center; 
 }
 
-#correct, #incorrect {
+#correct, #incorrect, #round, #highScore {
   background-color: rgb(222, 231, 224);
   font-weight: bold;
   margin-top: 20px;
   color: #152238;
-  width: 30%;
+  text-align: left;
 }
 
 @media (min-width: 768px) {
@@ -77,9 +77,9 @@ h1 {
     width: 40%;
   }
 
-  #correct, #incorrect {
-    width: 20%;
-  }
+  /* #correct, #incorrect, #round, #highScore {
+    width: 22%;
+  } */
 }
 
 @media (min-width: 600px) {
@@ -120,5 +120,4 @@ h1 {
 .btn {
   align-items: center;
   margin: auto;
-  height: 50px !important;
 }

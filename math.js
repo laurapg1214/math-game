@@ -7,13 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
   math = {};
   // nums (to store counters, time etc)
   nums = {
-    // initialize counters
+    // initialize time & counters
     time: 10,
     correctCount: 0,
     incorrectCount: 0,
     
-    // initialize max number
+    // initialize max number, high score, round
     maxNum: 0,
+    highScore: 0,
+    round: 1
   };
   console.log(nums);
 
@@ -26,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const incorrectScore = document.querySelector('#incorrect');
   const instructions = document.querySelector('#instructions');
   const gameArea = document.querySelector('#game-area');
+  const scorecard = document.querySelector('#scorecard');
+  const round = document.querySelector('#round');
+  const highScore = document.querySelector('#highScore');
 
   // declare countdown var
   var startCountdown;
@@ -37,8 +42,15 @@ document.addEventListener('DOMContentLoaded', function() {
     return x;
   }
 
-  generateY = () => {
+  generateY = (x, z, badY) => {
     let y = Math.floor((Math.random() * nums.maxNum) + 1);
+
+    // check for positive whole integers
+    if ((z === '-' && y >= x) || (z === '/' && (x % y != 0))) {
+      console.log('bad y');
+      let badY = y;
+      y = generateY(x, z, badY);
+    }
     return y;
   }
 
@@ -50,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // generate question variables and answer
-  calculate = (x, y, z) => {
+  calculate = (x, z, y) => {
     switch (z) {
       case '+':
         return x + y;
@@ -64,12 +76,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return (x + y);
   }
 
-  // getNums function as object
+  // getMath function 
   getMath = () => {
-    let x = generateX(),
-        y =  generateY(),
-        z = generateZ(),
-        answer = calculate(x, y, z);
+    let x = 5;
+    let z = '/';
+
+    // check for possibility of positive whole integer results
+    if ((x === 1 && z === '-') || (x % 2 !== 0 && z === '/')) {
+      x++;
+    }
+
+    let y =  generateY(x, z);
+    let answer = calculate(x, z, y);
 
     // return values
     return {x, y, z, answer};
@@ -78,17 +96,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // BUTTON FUNCTIONALITIES
   // submit button functionality
   submitButton.onclick = () => {
-    if (nums.maxNum == 0) {
-      let x = Number(input.value);
+    if (nums.maxNum === 0) {
+      let n = Number(input.value);
       //reset input field
       input.value = '';
-      if (isNaN(x) || x <= 0) {
+      if (isNaN(n) || n <= 0) {
         // rerun function
         maxNumPrompt();
       } else {
         // assign to maxNum
-        nums.maxNum = x;
-        console.log(nums.maxNum);
+        nums.maxNum = n;
         // start game 
         playGame();
       }
@@ -108,11 +125,31 @@ document.addEventListener('DOMContentLoaded', function() {
   // question button functionality
   question.onclick = () => {
     // check for beginning or new round
-    if (gameArea.style.display = 'none') {
+    if (gameArea.style.display != 'block') {
       startGame();
     } else {
       maxNumPrompt();
     }
+  }
+
+  // event listener for enter key (submit)
+  input.addEventListener('keypress', function(event) {  
+    if (event.key === 'Enter') {
+      event.preventDefault();
+
+      // trigger submit button element with click
+      submitButton.click();
+    }
+  });
+  
+  // focus functions
+  focusForm = () => {
+    input.autocomplete = 'off';
+    input.focus();
+  }
+
+  focusButton = () => {
+    question.focus();
   }
 
   /////////////////////////////////////////////////
@@ -121,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
   startGame = () => {
     instructions.style.display = 'none';
     gameArea.style.display = 'block';
+    scorecard.style.display = 'none';
 
     // reset maxNum & score counters
     nums.maxNum = 0;
@@ -144,7 +182,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // enable input field 
     input.disabled = false;
 
-    // TODO: run maxNum input grab function
+    // update round innerHTML
+    round.innerHTML = '|| Round: ' + nums.round;
+
+    // run maxNum input grab function
     maxNumPrompt();
   }
 
@@ -165,11 +206,11 @@ document.addEventListener('DOMContentLoaded', function() {
     input.value = '';
     input.placeholder = 'Type your answer here';
 
+    // show scorecard
+    scorecard.style.display = 'block';
+
     // start clock sound
     clockSound.play();
-
-    // start countdown function
-    countdown();
 
     // start countdown
     startCountdown = setInterval(countdown, 1000);
@@ -201,8 +242,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(math);
 
     // update page elements
-    question.innerHTML = math.x + math.z + math.y;
+    question.innerHTML = math.x + ' ' + math.z + ' ' + math.y;
     question.className = 'btn btn-primary';
+    // ***TODO change question button background color - darker***
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
     input.value = '';
@@ -221,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // correct response function
   correct = () => {
-    console.log('correct');
     // play correct chime
     chimeCorrect.play();
 
@@ -242,7 +283,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // incorrect response function
   incorrect = () => {
-    console.log('incorrect');
     // play incorrect chime
     chimeIncorrect.play();
 
@@ -257,25 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
     mathProblem();
   }
 
-  // event listener for enter key (submit)
-  input.addEventListener('keypress', function(event) {  
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      // trigger submit button element with click
-      submitButton.click()
-    }
-  });
-
-  // focus functions
-  focusForm = () => {
-    input.autocomplete = 'off';
-    input.focus();
-  }
-
-  focusButton = () => {
-    question.focus();
-  }
-
   //////////////////////////////////////////////////
 
   // END GAME function
@@ -286,6 +307,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // pause clock sound, play buzzer
     clockSound.pause();
     buzzer.play();
+
+    // update round (displays on new game click)
+    nums.round++;
+
+    // update high score
+    if (nums.highScore < nums.correctCount) {
+      nums.highScore = nums.correctCount;
+      highScore.innerHTML = '|| High score: ' + nums.highScore;
+    }
 
     // reset time
     nums.time = 10;
@@ -304,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input.value = 'Game over!';
     input.style.color = '#006400';
     input.style.fontWeight = 'bold';
+    //***TODO change awful yellow color***
     input.style.backgroundColor = 'rgb(255, 254, 200)';
 
     // disable submit button and input field
