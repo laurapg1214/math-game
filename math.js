@@ -255,9 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // countdown function
   countdown = () => {
     if (nums.time > 1) {
+      console.log('continue');
       nums.time--;
       time.innerHTML = nums.time + 's';
     } else {
+      console.log('end');
       endGame();
     }
   }
@@ -356,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearInterval(startCountdown);
 
     // pause clock sound, play buzzer
-    clockSound.pause();
+    clock.pause();
     buzzer.play();
 
     // change time to 0
@@ -371,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // display game over
     submitButton.innerHTML = 'Score: ' + nums.correctScore;
-    submitButton.style.backgroundColor = '#006400';
+    submitButton.style.backgroundColor = 'black';
 
     // disable submit button and input field
     submitButton.disabled = true;
@@ -386,6 +388,6 @@ document.addEventListener('DOMContentLoaded', function() {
     input.value = 'Game over!';
     input.style.color = 'white';
     input.style.fontWeight = 'bold';
-    input.style.backgroundColor = '#006400';
+    input.style.backgroundColor = '#23395d';
   }
 });
