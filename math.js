@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
   question.onclick = () => {
     // check for beginning or new round
     if (gameStarted === false) {
+      chimeStart.play();
       startGame();
     } else {
       playGame();
@@ -241,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // show scorecard 
     scorecard.style.display = 'block';
     // start clock sound
-    clockSound.play();
+    clock.play();
     // start countdown
     startCountdown = setInterval(countdown, 1000);
     // run math problem function
