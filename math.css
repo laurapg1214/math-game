@@ -25,6 +25,11 @@ h1 {
   padding-top: 33px;
 }
 
+.btn {
+  align-items: center;
+  margin: auto;
+}
+
 .question {
   padding-bottom: 20px;
   margin: auto;
@@ -41,7 +46,8 @@ h1 {
   text-align: center;
   font-size: 1.5em;
   font-style: italic;
-  color: #152238;
+  font-weight: bold;
+  color: #23395d;
 }
 
 #game-area {
@@ -53,8 +59,13 @@ h1 {
   text-align: center;
   padding: 20px 0px 20px 0px;
   background-color: rgb(255, 254, 200);
-  color: #152238;
+  color: #23395d;
   width: 60%;
+}
+
+#submit {
+  margin-top: 20px;
+  font-size: 1.3em;
 }
 
 #scorecard {
@@ -109,15 +120,4 @@ h1 {
   #scorecard {
     padding-left: 50px;
   }
-}
-
-#submit {
-  margin-top: 20px;
-  font-size: 1.3em;
-  background-color: grey;
-}
-
-.btn {
-  align-items: center;
-  margin: auto;
 }

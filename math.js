@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // check for positive whole integers
     if ((z === '-' && y >= x) || (z === '/' && (x % y != 0))) {
-      console.log('bad y');
       let badY = y;
       y = generateY(x, z, badY);
     }
@@ -78,17 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // getMath function 
   getMath = () => {
-    let x = 5;
-    let z = '/';
-
+    let x = generateX();
+    let z = generateZ();
     // check for possibility of positive whole integer results
     if ((x === 1 && z === '-') || (x % 2 !== 0 && z === '/')) {
       x++;
     }
-
     let y =  generateY(x, z);
     let answer = calculate(x, z, y);
-
     // return values
     return {x, y, z, answer};
   }
@@ -112,7 +108,12 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       // grab input, convert to number
       const response = Number(input.value);
-        
+      
+      // check for string 
+      if (isNaN(response) || response == '') {
+        resetInput();
+        return;
+      }
       // assign to math object
       math.response = response;
       console.log(math);
@@ -136,12 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
   input.addEventListener('keypress', function(event) {  
     if (event.key === 'Enter') {
       event.preventDefault();
-      var isFocused = (document.activeElement === question);
-      if (isFocused === true) {
-        console.log('hi question button');
-      } else {
-        console.log('no question button');
-      }
+  
       // trigger submit button element with click
       submitButton.click();
     }
@@ -193,22 +189,26 @@ document.addEventListener('DOMContentLoaded', function() {
     maxNumPrompt();
   }
 
-  // TODO: define max number prompt function
+  // max number prompt function
   maxNumPrompt = () => {
     focusForm();
     question.innerHTML = 'What maximum number do you want to use for your math problems?';
     input.value = '';
     input.placeholder = 'Enter number here';
-    input.style.backgroundColor = 'white';
     
     // see submit button functionality above
+  }
+
+  // resetAnswer function
+  resetInput = () => {
+    input.value = '';
+    input.placeholder = 'Type your answer here';
   }
 
   // play game function
   playGame = () => {
     // reset input field w placeholder
-    input.value = '';
-    input.placeholder = 'Type your answer here';
+    resetInput();
 
     // show scorecard
     scorecard.style.display = 'block';
@@ -247,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // update page elements
     question.innerHTML = math.x + ' ' + math.z + ' ' + math.y;
-    question.className = 'btn btn-primary';
     // ***TODO change question button background color - darker***
     question.style.fontStyle = 'normal';
     input.style.backgroundColor = 'white';
@@ -329,6 +328,10 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.innerHTML = 'Score: ' + nums.correctCount;
     submitButton.style.backgroundColor = '#006400';
 
+    // disable submit button and input field
+    submitButton.disabled = true;
+    input.disabled = true;
+    
     // reset start game button, give focus
     question.innerHTML = 'New game';
     question.disabled = false;
@@ -340,9 +343,5 @@ document.addEventListener('DOMContentLoaded', function() {
     input.style.fontWeight = 'bold';
     //***TODO change awful yellow color***
     input.style.backgroundColor = 'rgb(255, 254, 200)';
-
-    // disable submit button and input field
-    submitButton.disabled = true;
-    input.disabled = true;
   }
 });
