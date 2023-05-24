@@ -2,22 +2,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // ORDER: setup, start game, play game in-game, end game
   // VARIABLE & OBJECT STRUCTURING, INITIAL WINDOW STATE
-  // breakdown: 2 objects:
-  // math (to store math problem & answer variables)
-  math = {};
-  // nums (to store counters, time etc)
-  nums = {
-    // initialize time & counters
-    time: 10,
-    correctCount: 0,
-    incorrectCount: 0,
-    
-    // initialize max number, high score, round
-    maxNum: 0,
-    highScore: 0,
-    round: 1
-  };
-  console.log(nums);
 
   // grab elements
   const question = document.querySelector('#question');
@@ -31,6 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
   const scorecard = document.querySelector('#scorecard');
   const round = document.querySelector('#round');
   const highScore = document.querySelector('#highScore');
+
+  // breakdown: 2 objects:
+  // math object (to store math problem & answer variables)
+  math = {};
+
+  // nums object (to store counters, time etc) with initial round value
+  nums = {
+    round: 1,
+    highScore: 0,
+    maxNum: 0,
+    time: 10
+  };
+
+  // reset function for relevant nums object properties
+  resetNums = () => {
+    nums.correctCount = 0;
+    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
+    correctScore.style.color = '#152238';
+    nums.incorrectCount = 0;
+    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
+    incorrectScore.style.color = '#152238';
+    console.log(nums);
+  }
+
+  // run reset
+  resetNums();
 
   // declare countdown var
   var startCountdown;
@@ -160,14 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
     gameArea.style.display = 'block';
     scorecard.style.display = 'none';
 
-    // reset maxNum & score counters
-    nums.maxNum = 0;
-    nums.correctCount = 0;
-    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
-    correctScore.style.color = '#152238';
-    nums.incorrectCount = 0;
-    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
-    incorrectScore.style.color = '#152238';
+    // reset nums properties (except round)
+    resetNums();
 
     // disable question button
     question.disabled = true;
