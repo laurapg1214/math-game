@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return y;
   }
 
-  // randomly select math operator from array (ro for random operator)
+  // randomly select math operator from array
   generateZ = () => {
     var operators = ['+', '-', '*', '/'];
     let z = operators[Math.floor(Math.random()*operators.length)];
@@ -136,21 +136,25 @@ document.addEventListener('DOMContentLoaded', function() {
   input.addEventListener('keypress', function(event) {  
     if (event.key === 'Enter') {
       event.preventDefault();
-
+      var isFocused = (document.activeElement === question);
+      if (isFocused === true) {
+        console.log('hi question button');
+      } else {
+        console.log('no question button');
+      }
       // trigger submit button element with click
       submitButton.click();
     }
   });
   
-  // focus functions
+  // focus on input function
   focusForm = () => {
     input.autocomplete = 'off';
     input.focus();
   }
 
-  focusButton = () => {
-    question.focus();
-  }
+  // focus question button at start
+  question.focus();
 
   /////////////////////////////////////////////////
 
@@ -328,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // reset start game button, give focus
     question.innerHTML = 'New game';
     question.disabled = false;
-    focusButton();
+    question.focus();
 
     // reset input field, focus form
     input.value = 'Game over!';
