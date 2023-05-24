@@ -209,11 +209,13 @@ document.addEventListener('DOMContentLoaded', function() {
     //reset input field
     input.value = '';
     // check for valid input
-    if (isNaN(n) || n <= 0 || n > 100) {
+    if (isNaN(n) || n <= 1 || n > 100) {
       if (isNaN(n)) {
         alert('Please enter a number');
       } else if (n <= 0) {
-        alert('Please enter a positive number') 
+        alert('Please enter a positive number');
+      } else if (n == 1) {
+        alert ('Please enter a number greater than 1');
       } else {
         alert('Maximum number is 100');
       }
@@ -380,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input.disabled = true;
     
     // update start game button, give focus
-    question.innerHTML = 'New game';
+    question.innerHTML = 'Play again';
     question.disabled = false;
     question.focus();
 
