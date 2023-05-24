@@ -22,25 +22,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // nums object (to store counters, time etc) with initial round value
   nums = {
-    round: 1,
+    round: 0,
     highScore: 0,
     maxNum: 0,
     time: 10
   };
 
-  // reset function for relevant nums object properties
+  // reset function for relevant nums object properties & innerHTML
   resetNums = () => {
-    nums.correctCount = 0;
-    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
+    nums.round++;
+    nums.correctScore = 0;
     correctScore.style.color = '#152238';
-    nums.incorrectCount = 0;
-    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
+    nums.incorrectScore = 0;
     incorrectScore.style.color = '#152238';
     console.log(nums);
-  }
 
-  // run reset
-  resetNums();
+    // update innerHTML for scorecard
+    correctScore.innerHTML = '|| Correct: ' + nums.correctScore;
+    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectScore;
+    round.innerHTML = '|| Round: ' + nums.round;
+    highScore.innerHTML = '|| High score: ' + nums.highScore;
+  }
 
   // declare countdown var
   var startCountdown;
@@ -137,9 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
   question.onclick = () => {
     // check for beginning or new round
     if (gameArea.style.display != 'block') {
-      startGame();
+      showGame();
     } else {
-      maxNumPrompt();
+      startGame();
     }
   }
 
@@ -165,12 +167,15 @@ document.addEventListener('DOMContentLoaded', function() {
   /////////////////////////////////////////////////
 
   // START GAME
-  startGame = () => {
+  showGame = () => {
     instructions.style.display = 'none';
     gameArea.style.display = 'block';
     scorecard.style.display = 'none';
+    startGame();
+  }
 
-    // reset nums properties (except round)
+  startGame = () => {
+    // reset relevant nums properties & innerHTML
     resetNums();
 
     // disable question button
@@ -185,9 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // enable input field 
     input.disabled = false;
-
-    // update round innerHTML
-    round.innerHTML = '|| Round: ' + nums.round;
 
     // run maxNum input grab function
     maxNumPrompt();
@@ -214,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // reset input field w placeholder
     resetInput();
 
-    // show scorecard
+    // show scorecard 
     scorecard.style.display = 'block';
 
     // start clock sound
@@ -274,11 +276,11 @@ document.addEventListener('DOMContentLoaded', function() {
     chimeCorrect.play();
 
     // update correct score, change color
-    if (nums.correctCount == 0) {
+    if (nums.correctScore == 0) {
       correctScore.style.color = '#006400';
     }
-    nums.correctCount++;
-    correctScore.innerHTML = '|| Correct: ' + nums.correctCount;
+    nums.correctScore++;
+    correctScore.innerHTML = '|| Correct: ' + nums.correctScore;
 
     // update timer
     nums.time++;
@@ -294,11 +296,11 @@ document.addEventListener('DOMContentLoaded', function() {
     chimeIncorrect.play();
 
     // update incorrect score, change color
-    if (nums.incorrectCount == 0) {
+    if (nums.incorrectScore == 0) {
       incorrectScore.style.color = '#B90E0A';
     }
-    nums.incorrectCount++;
-    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectCount;
+    nums.incorrectScore++;
+    incorrectScore.innerHTML = '|| Incorrect: ' + nums.incorrectScore;
 
     // new question
     mathProblem();
@@ -315,21 +317,19 @@ document.addEventListener('DOMContentLoaded', function() {
     clockSound.pause();
     buzzer.play();
 
-    // update round (displays on new game click)
-    nums.round++;
-
     // update high score
-    if (nums.highScore < nums.correctCount) {
-      nums.highScore = nums.correctCount;
+    if (nums.highScore < nums.correctScore) {
+      nums.highScore = nums.correctScore;
       highScore.innerHTML = '|| High score: ' + nums.highScore;
     }
 
-    // reset time
+    // reset time and maxNum
     nums.time = 10;
     seconds.innerHTML = nums.time + 's';
+    nums.maxNum = 0;
 
     // display game over
-    submitButton.innerHTML = 'Score: ' + nums.correctCount;
+    submitButton.innerHTML = 'Score: ' + nums.correctScore;
     submitButton.style.backgroundColor = '#006400';
 
     // disable submit button and input field
