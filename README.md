@@ -1,5 +1,5 @@
 **10-second Math Game**<br>
-Simple math game with 10-second countdown timer, options for maximum number and replay. <br>
+Simple math game with 10-second countdown timer, options for maximum number and replay, with responsive design. <br>
 Created as part of Altcademy's Full Stack Web Development bootcamp.<br><br>
 **Approach**
 - used querySelector instead of jQuery to get used to vanilla JavaScript DOM manipulation (as had used jQuery in other projects)
